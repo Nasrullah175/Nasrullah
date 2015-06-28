@@ -1,0 +1,48 @@
+# Nasrullahimport java.io.IOException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+
+public class Crawl {
+
+	
+	public static void main(String[] args) {
+		
+		   Document doc;
+	        try{
+	            doc= Jsoup.connect("http://www.shophive.com/apple/mac?p=1").get();
+	            Elements urls  = doc.select("a");
+	            
+	    		
+	            for (int j = 0; j < urls.size()-1; j++) {
+					Element url = urls.get(j);
+					//I do not understand that how convert the Element to String type
+					String link = ToString(url);
+					WebDriver d = new FirefoxDriver();
+	        		d.navigate().to(link);
+	        		java.util.List<WebElement> productNames = d.findElements(By.xpath("//div/div/h2/a"));
+	        		java.util.List<WebElement> productprice = d.findElements(By.xpath(".//*[@class='regular-price']/span"));
+	        		for (int i = 0; i < productprice.size()-1; i++) 
+	        		{
+	        		System.out.println("Product Name= " + productNames.get(i).getText()+"\n Product Price" + productprice.get(i).getText());
+	        		}
+	        		
+	        		d.close();
+				}
+	        }catch(IOException e){
+	            
+	        }
+	}
+
+	private static String ToString(Element url) {
+		
+		return null;
+	}
+
+}
